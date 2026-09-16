@@ -254,3 +254,17 @@ footer {
         font-size: 34px;
     }
 }
+.tech {
+    color: #8b5cf6;
+    font-size: 14px;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+.project-card h3 a {
+    color: white;
+    text-decoration: none;
+}
+
+.project-card h3 a:hover {
+    color: #8b5cf6;
+}
