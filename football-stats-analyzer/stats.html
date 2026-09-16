@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Player Stats Analyzer</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: #08080d;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .label {
+            color: #8b5cf6;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #9999a8;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #d0d0da;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border-radius: 8px;
+            border: 1px solid #444452;
+            background: #111118;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #8b5cf6;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            background: #8b5cf6;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .result {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            background: rgba(139, 92, 246, 0.08);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .result h2 {
+            margin-bottom: 15px;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .stat:last-child {
+            border-bottom: none;
+        }
+
+        .value {
+            color: #8b5cf6;
+            font-weight: bold;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #9999a8;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            color: #8b5cf6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <p class="label">FOOTBALL ANALYZER</p>
+
+        <h1>⚽ Player Stats</h1>
+
+        <p class="description">
+            Enter a player's statistics and calculate their performance instantly.
+        </p>
+
+        <div class="input-group">
+            <label for="player">Player Name</label>
+            <input type="text" id="player" placeholder="e.g. Lionel Messi">
+        </div>
+
+        <div class="input-group">
+            <label for="matches">Matches Played</label>
+            <input type="number" id="matches" min="1" placeholder="e.g. 30">
+        </div>
+
+        <div class="input-group">
+            <label for="goals">Goals</label>
+            <input type="number" id="goals" min="0" placeholder="e.g. 25">
+        </div>
+
+        <div class="input-group">
+            <label for="assists">Assists</label>
+            <input type="number" id="assists" min="0" placeholder="e.g. 12">
+        </div>
+
+        <button onclick="analyzeStats()">Analyze Player</button>
+
+        <div class="result" id="result">
+
+            <h2 id="playerName"></h2>
+
+            <div class="stat">
+                <span>Goals</span>
+                <span class="value" id="goalResult"></span>
+            </div>
+
+            <div class="stat">
+                <span>Assists</span>
+                <span class="value" id="assistResult"></span>
+            </div>
+
+            <div class="stat">
+                <span>Goal Contributions</span>
+                <span class="value" id="contributionResult"></span>
+            </div>
+
+            <div class="stat">
+                <span>Goals per Match</span>
+                <span class="value" id="goalsPerMatch"></span>
+            </div>
+
+            <div class="stat">
+                <span>Assists per Match</span>
+                <span class="value" id="assistsPerMatch"></span>
+            </div>
+
+        </div>
+
+        <a class="back" href="../../index.html">← Back to Portfolio</a>
+
+    </div>
+
+    <script>
+        function analyzeStats() {
+
+            const player = document.getElementById("player").value;
+            const matches = Number(document.getElementById("matches").value);
+            const goals = Number(document.getElementById("goals").value);
+            const assists = Number(document.getElementById("assists").value);
+
+            if (!player || matches <= 0 || goals < 0 || assists < 0) {
+                alert("Please enter valid player statistics.");
+                return;
+            }
+
+            const contributions = goals + assists;
+            const goalsPerGame = goals / matches;
+            const assistsPerGame = assists / matches;
+
+            document.getElementById("playerName").textContent = "📊 " + player;
+
+            document.getElementById("goalResult").textContent = goals;
+            document.getElementById("assistResult").textContent = assists;
+            document.getElementById("contributionResult").textContent = contributions;
+            document.getElementById("goalsPerMatch").textContent = goalsPerGame.toFixed(2);
+            document.getElementById("assistsPerMatch").textContent = assistsPerGame.toFixed(2);
+
+            document.getElementById("result").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
