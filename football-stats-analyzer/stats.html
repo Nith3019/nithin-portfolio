@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football Player Stats Analyzer</title>
+    <title>Football G/A Analyzer | 2025/26</title>
 
     <style>
         * {
@@ -20,17 +20,17 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 30px;
+            padding: 25px;
         }
 
         .container {
             width: 100%;
             max-width: 650px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 20px;
-            padding: 35px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            text-align: center;
         }
 
         .label {
@@ -46,30 +46,27 @@
             margin-bottom: 10px;
         }
 
+        .season {
+            color: #8b5cf6;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
         .description {
             color: #9999a8;
-            margin-bottom: 30px;
-        }
-
-        .input-group {
-            margin-bottom: 18px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #d0d0da;
+            margin-bottom: 25px;
         }
 
         input {
             width: 100%;
-            padding: 13px;
+            padding: 15px;
             border-radius: 8px;
             border: 1px solid #444452;
             background: #111118;
             color: white;
             font-size: 16px;
             outline: none;
+            margin-bottom: 12px;
         }
 
         input:focus {
@@ -78,8 +75,7 @@
 
         button {
             width: 100%;
-            padding: 14px;
-            margin-top: 10px;
+            padding: 15px;
             border: none;
             border-radius: 8px;
             background: #8b5cf6;
@@ -87,36 +83,30 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+            opacity: 0.9;
         }
 
-        .result {
+        #result {
             display: none;
             margin-top: 30px;
             padding: 25px;
             border-radius: 15px;
-            background: rgba(139, 92, 246, 0.08);
-            border: 1px solid rgba(139, 92, 246, 0.3);
+            background: rgba(139,92,246,0.08);
+            border: 1px solid rgba(139,92,246,0.3);
         }
 
-        .result h2 {
-            margin-bottom: 15px;
+        #playerName {
+            margin-bottom: 20px;
         }
 
         .stat {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .stat:last-child {
-            border-bottom: none;
+            padding: 13px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
 
         .value {
@@ -124,10 +114,14 @@
             font-weight: bold;
         }
 
+        .ratio {
+            font-size: 28px;
+            margin-top: 20px;
+        }
+
         .back {
             display: block;
-            text-align: center;
-            margin-top: 20px;
+            margin-top: 25px;
             color: #9999a8;
             text-decoration: none;
         }
@@ -140,101 +134,109 @@
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <p class="label">FOOTBALL ANALYZER</p>
+    <p class="label">FOOTBALL ANALYZER</p>
 
-        <h1>⚽ Player Stats</h1>
+    <h1>⚽ Player G/A Analyzer</h1>
 
-        <p class="description">
-            Enter a player's statistics and calculate their performance instantly.
-        </p>
+    <p class="season">2025/26 SEASON</p>
 
-        <div class="input-group">
-            <label for="player">Player Name</label>
-            <input type="text" id="player" placeholder="e.g. Lionel Messi">
+    <p class="description">
+        Search for a player to see their goals, assists and goal contributions.
+    </p>
+
+    <input
+        type="text"
+        id="playerInput"
+        placeholder="Enter player name..."
+    >
+
+    <button onclick="searchPlayer()">Search Player</button>
+
+    <div id="result">
+
+        <h2 id="playerName"></h2>
+
+        <div class="stat">
+            <span>Goals</span>
+            <span class="value" id="goals"></span>
         </div>
 
-        <div class="input-group">
-            <label for="matches">Matches Played</label>
-            <input type="number" id="matches" min="1" placeholder="e.g. 30">
+        <div class="stat">
+            <span>Assists</span>
+            <span class="value" id="assists"></span>
         </div>
 
-        <div class="input-group">
-            <label for="goals">Goals</label>
-            <input type="number" id="goals" min="0" placeholder="e.g. 25">
+        <div class="stat">
+            <span>Goal Contributions</span>
+            <span class="value" id="contributions"></span>
         </div>
 
-        <div class="input-group">
-            <label for="assists">Assists</label>
-            <input type="number" id="assists" min="0" placeholder="e.g. 12">
+        <div class="ratio">
+            G/A Ratio: <span class="value" id="ratio"></span>
         </div>
-
-        <button onclick="analyzeStats()">Analyze Player</button>
-
-        <div class="result" id="result">
-
-            <h2 id="playerName"></h2>
-
-            <div class="stat">
-                <span>Goals</span>
-                <span class="value" id="goalResult"></span>
-            </div>
-
-            <div class="stat">
-                <span>Assists</span>
-                <span class="value" id="assistResult"></span>
-            </div>
-
-            <div class="stat">
-                <span>Goal Contributions</span>
-                <span class="value" id="contributionResult"></span>
-            </div>
-
-            <div class="stat">
-                <span>Goals per Match</span>
-                <span class="value" id="goalsPerMatch"></span>
-            </div>
-
-            <div class="stat">
-                <span>Assists per Match</span>
-                <span class="value" id="assistsPerMatch"></span>
-            </div>
-
-        </div>
-
-        <a class="back" href="../../index.html">← Back to Portfolio</a>
 
     </div>
 
-    <script>
-        function analyzeStats() {
+    <a class="back" href="../../index.html">← Back to Portfolio</a>
 
-            const player = document.getElementById("player").value;
-            const matches = Number(document.getElementById("matches").value);
-            const goals = Number(document.getElementById("goals").value);
-            const assists = Number(document.getElementById("assists").value);
+</div>
 
-            if (!player || matches <= 0 || goals < 0 || assists < 0) {
-                alert("Please enter valid player statistics.");
-                return;
-            }
+<script>
+async function searchPlayer() {
 
-            const contributions = goals + assists;
-            const goalsPerGame = goals / matches;
-            const assistsPerGame = assists / matches;
+    const name = document.getElementById("playerInput").value.trim();
 
-            document.getElementById("playerName").textContent = "📊 " + player;
+    if (!name) {
+        alert("Please enter a player name.");
+        return;
+    }
 
-            document.getElementById("goalResult").textContent = goals;
-            document.getElementById("assistResult").textContent = assists;
-            document.getElementById("contributionResult").textContent = contributions;
-            document.getElementById("goalsPerMatch").textContent = goalsPerGame.toFixed(2);
-            document.getElementById("assistsPerMatch").textContent = assistsPerGame.toFixed(2);
+    const result = document.getElementById("result");
 
-            document.getElementById("result").style.display = "block";
+    result.style.display = "block";
+    document.getElementById("playerName").textContent = "Searching...";
+
+    try {
+
+        const response = await fetch(
+            `/api/player?name=${encodeURIComponent(name)}`
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Player not found");
         }
-    </script>
+
+        document.getElementById("playerName").textContent =
+            "📊 " + data.player;
+
+        document.getElementById("goals").textContent =
+            data.goals;
+
+        document.getElementById("assists").textContent =
+            data.assists;
+
+        document.getElementById("contributions").textContent =
+            data.goals + data.assists;
+
+        document.getElementById("ratio").textContent =
+            data.goals + data.assists;
+
+    } catch (error) {
+
+        document.getElementById("playerName").textContent =
+            "❌ " + error.message;
+
+        document.getElementById("goals").textContent = "";
+        document.getElementById("assists").textContent = "";
+        document.getElementById("contributions").textContent = "";
+        document.getElementById("ratio").textContent = "";
+    }
+}
+</script>
 
 </body>
 </html>
